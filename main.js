@@ -1,6 +1,8 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
+const path = require('path');
 
 let mainWindow;
+let willQuitApp = false;
 
 function createMainWindow() {
   mainWindow = new BrowserWindow({
@@ -9,16 +11,32 @@ function createMainWindow() {
     // resizable: false,
     backgroundColor: '#ffffff',
     webPreferences: {
-      sandbox: true,
-      preload: 'preload.js'
-    }
+      nodeIntegration: false,
+      preload: path.join(__dirname, 'preload.js'),
+    },
+    show: false,
   });
+  mainWindow.webContents.openDevTools();
   mainWindow.loadURL('https://ringcentral.github.io/ringcentral-embeddable-voice/app.html');
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
+  });
+  mainWindow.on('close', (event) => {
+    if (willQuitApp) {
+      mainWindow = null;
+      return;
+    }
+    event.preventDefault();
+    mainWindow.hide();
+  })
 }
 
+let notification;
 app.on('ready', () => {
   createMainWindow();
 });
+
+app.on('before-quit', () => willQuitApp = true);
 
 app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
@@ -26,6 +44,10 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+});
+
+ipcMain.on('show-main-window', (e, data) => {
+  mainWindow.show();
 });
 
 app.on('activate', () => {
