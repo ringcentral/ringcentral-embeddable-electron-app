@@ -8,7 +8,7 @@ function createMainWindow() {
   mainWindow = new BrowserWindow({
     width: 300,
     height: 540,
-    // resizable: false,
+    resizable: false,
     backgroundColor: '#ffffff',
     webPreferences: {
       nodeIntegration: false,
@@ -16,7 +16,8 @@ function createMainWindow() {
     },
     show: false,
   });
-  mainWindow.webContents.openDevTools();
+  // open dev tool default
+  // mainWindow.webContents.openDevTools();
   mainWindow.loadURL('https://ringcentral.github.io/ringcentral-embeddable-voice/app.html');
   mainWindow.once('ready-to-show', () => {
     mainWindow.show()

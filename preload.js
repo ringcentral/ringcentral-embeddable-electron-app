@@ -3,7 +3,7 @@ const path = require('path');
 
 console.log('preload...')
 
-function dispathMessage(data) {
+function dispatchMessage(data) {
   const message = new MessageEvent('message', {
     view: window.parent,
     bubbles: false,
@@ -16,7 +16,7 @@ function dispathMessage(data) {
 
 // mock main window post message
 window.parent.postMessage = function (data) {
-  dispathMessage(data);
+  dispatchMessage(data);
 };
 
 window.addEventListener('message', function (event) {
@@ -33,7 +33,7 @@ window.addEventListener('message', function (event) {
       });
       notification.onclick = () => {
         // answer the call directly
-        // dispathMessage({
+        // dispatchMessage({
         //   type: 'rc-adapter-control-call',
         //   callAction: 'answer',
         //   callId: call.id,
@@ -41,7 +41,7 @@ window.addEventListener('message', function (event) {
         ipcRenderer.send('show-main-window');
       };
       notification.onclose = () => {
-        dispathMessage({
+        dispatchMessage({
           type: 'rc-adapter-control-call',
           callAction: 'reject',
           callId: call.id,
