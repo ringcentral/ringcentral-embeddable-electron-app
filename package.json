@@ -3,10 +3,67 @@
   "version": "0.0.1",
   "main": "main.js",
   "license": "MIT",
+  "author": {
+    "name": "Embbnux Ji",
+    "email": "embbnux@embbnux.com",
+    "url": "https://github.com/embbnux"
+  },
   "scripts": {
-    "start": "electron ."
+    "postinstall": "electron-builder install-app-deps",
+    "start": "electron .",
+    "package": "electron-builder",
+    "package-linux": "electron-builder --linux",
+    "package-release": "electron-builder --linux -p always"
   },
   "devDependencies": {
-    "electron": "^2.0.0"
+    "electron": "^2.0.0",
+    "electron-builder": "^20.13.3"
+  },
+  "build": {
+    "productName": "RingCentral Embeddable Voice",
+    "appId": "com.ringcentral.integration.EmbeddableVoice",
+    "files": [
+      "package.json",
+      "main.js",
+      "preload.js",
+      "icon.png",
+      "icon.icns"
+    ],
+    "directories": {
+      "buildResources": "build",
+      "output": "release"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "embbnux",
+        "repo": "ringcentral-embeddable-voice-app"
+      }
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "AppImage"
+      ]
+    }
   }
 }

@@ -19,3 +19,11 @@ $ cd ringcentral-embeddable-voice-app
 $ yarn
 $ yarn start
 ```
+
+### Build package
+
+To build a Linux package(deb, AppImage)
+
+```
+yarn package-linux
+```
