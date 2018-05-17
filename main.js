@@ -1,10 +1,11 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, session } = require('electron');
 const path = require('path');
 
 let mainWindow;
 let willQuitApp = false;
 
 function createMainWindow() {
+  const ses = session.fromPartition('persist:rc-ev-session');
   mainWindow = new BrowserWindow({
     width: 300,
     height: 540,
@@ -13,6 +14,7 @@ function createMainWindow() {
     webPreferences: {
       nodeIntegration: false,
       preload: path.join(__dirname, 'preload.js'),
+      session: ses,
     },
     show: false,
   });
@@ -22,14 +24,6 @@ function createMainWindow() {
   mainWindow.once('ready-to-show', () => {
     mainWindow.show()
   });
-  mainWindow.on('close', (event) => {
-    if (willQuitApp) {
-      mainWindow = null;
-      return;
-    }
-    event.preventDefault();
-    mainWindow.hide();
-  })
 }
 
 let notification;
@@ -37,11 +31,10 @@ app.on('ready', () => {
   createMainWindow();
 });
 
-app.on('before-quit', () => willQuitApp = true);
-
 app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
+  mainWindow = null;
   if (process.platform !== 'darwin') {
     app.quit();
   }

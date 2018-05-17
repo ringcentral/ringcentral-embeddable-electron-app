@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=RingCentral Embeddable Voice
+Exec=ringcentral-embeddable-voice
+Icon=icon.png
+Type=Application
+Categories=Nework;Telephony;
+Terminal=false

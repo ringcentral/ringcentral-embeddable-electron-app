@@ -1,6 +1,6 @@
 {
   "name": "ringcentral-embeddable-voice-app",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "main": "main.js",
   "license": "MIT",
   "author": {
@@ -27,7 +27,8 @@
       "main.js",
       "preload.js",
       "icon.png",
-      "icon.icns"
+      "icon.icns",
+      "build/icon.*"
     ],
     "directories": {
       "buildResources": "build",
@@ -40,6 +41,10 @@
         "repo": "ringcentral-embeddable-voice-app"
       }
     ],
+    "mac": {
+      "category": "public.app-category.business",
+      "icon": "icon.icns"
+    },
     "dmg": {
       "contents": [
         {
@@ -63,7 +68,9 @@
       "target": [
         "deb",
         "AppImage"
-      ]
+      ],
+      "category": "Telephony",
+      "desktop": "rc-ev.desktop"
     }
   }
 }
