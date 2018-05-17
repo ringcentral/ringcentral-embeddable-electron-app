@@ -7,9 +7,9 @@ let willQuitApp = false;
 function createMainWindow() {
   const ses = session.fromPartition('persist:rc-ev-session');
   mainWindow = new BrowserWindow({
-    width: 300,
+    width: 310,
     height: 540,
-    resizable: false,
+    // resizable: false,
     backgroundColor: '#ffffff',
     webPreferences: {
       nodeIntegration: false,
