@@ -13,7 +13,8 @@
     "start": "electron .",
     "package": "electron-builder",
     "package-linux": "electron-builder --linux",
-    "package-release": "electron-builder --linux -p always"
+    "package-release": "electron-builder --linux -p always",
+    "package-all": "electron-builder -mwl"
   },
   "devDependencies": {
     "electron": "^2.0.0",

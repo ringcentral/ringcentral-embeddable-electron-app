@@ -6,21 +6,27 @@ let willQuitApp = false;
 
 function createMainWindow() {
   const ses = session.fromPartition('persist:rc-ev-session');
+  // Create the main window
   mainWindow = new BrowserWindow({
     width: 310,
     height: 540,
-    // resizable: false,
+    resizable: false,
     backgroundColor: '#ffffff',
     webPreferences: {
       nodeIntegration: false,
       preload: path.join(__dirname, 'preload.js'),
       session: ses,
     },
-    show: false,
+    show: false, // hidden the windown before loaded
   });
   // open dev tool default
   // mainWindow.webContents.openDevTools();
+  // To load RingCentral Embeddable Voice
   mainWindow.loadURL('https://ringcentral.github.io/ringcentral-embeddable-voice/app.html');
+  // To use Game of Thrones Styles, please replace upper line as following line:
+  // mainWindow.loadURL('https://ringcentral.github.io/ringcentral-embeddable-voice/app.html?stylesUri=https://embbnux.github.io/ringcentral-web-widget-styles/GameofThrones/styles.css');
+
+  // Show the main window when page is loaded
   mainWindow.once('ready-to-show', () => {
     mainWindow.show()
   });
