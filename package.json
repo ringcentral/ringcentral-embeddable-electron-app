@@ -1,6 +1,6 @@
 {
   "name": "ringcentral-embeddable-voice-app",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "main.js",
   "license": "MIT",
   "author": {
