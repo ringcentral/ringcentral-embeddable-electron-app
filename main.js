@@ -1,11 +1,17 @@
-const { app, BrowserWindow, ipcMain, session } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
+
+const singleInstanceLock = app.requestSingleInstanceLock();
+
+if (!singleInstanceLock) {
+  console.warn('App already running');
+	app.quit();
+}
 
 let mainWindow;
 
 // console.log(process.versions);
 
 function createMainWindow() {
-  const sess = session.fromPartition('persist:rcstorage');
   // Create the main window
   mainWindow = new BrowserWindow({
     width: 300,
@@ -15,7 +21,7 @@ function createMainWindow() {
     webPreferences: {
       nodeIntegration: true,
       nativeWindowOpen: true,
-      session: sess,
+      partition: 'persist:rcstorage',
       webviewTag: true,
     },
     frame: false,
@@ -41,15 +47,20 @@ function createMainWindow() {
   //     session: sess,
   //   });
   // });
-  mainWindow.on('close', (event) => {
-    if (app.quitting) {
-      mainWindow = null
-    } else {
-      event.preventDefault()
-      mainWindow.hide()
-    }
+  mainWindow.on('close', () => {
+    mainWindow = null
   });
 }
+
+app.on('second-instance', () => {
+  if (!mainWindow) {
+    return;
+  }
+  if (mainWindow.isMinimized()) {
+    mainWindow.restore();
+  }
+  mainWindow.focus();
+});
 
 app.on('ready', () => {
   createMainWindow();
@@ -61,6 +72,16 @@ app.on('window-all-closed', () => {
   mainWindow = null;
   if (process.platform !== 'darwin') {
     app.quit();
+  }
+});
+
+app.on('activate', () => {
+  // On OS X it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (mainWindow === null) {
+    createMainWindow();
+  } else {
+    mainWindow.show();
   }
 });
 
@@ -86,18 +107,4 @@ ipcMain.on('close-main-window', () => {
     return;
   }
   mainWindow.hide();
-});
-
-app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    createMainWindow();
-  } else {
-    mainWindow.show();
-  }
-});
-
-app.on('before-quit', () => {
-  app.quitting = true;
 });
