@@ -1,6 +1,6 @@
-# RingCentral Embeddable Voice with Electron
+# RingCentral Embeddable with Electron
 
-Build a RingCentral desktop app with [RingCentral Embeddable Voice](https://github.com/ringcentral/ringcentral-embeddable-voice) and [Electron.js](https://electronjs.org)
+Build a RingCentral desktop app with [RingCentral Embeddable](https://github.com/ringcentral/ringcentral-embeddable-voice) and [Electron.js](https://electronjs.org)
 
 ![image](https://user-images.githubusercontent.com/7036536/40214449-5923de46-5a8d-11e8-937a-d4e7e7729284.jpeg)
 

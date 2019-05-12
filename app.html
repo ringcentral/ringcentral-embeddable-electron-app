@@ -1,0 +1,128 @@
+<html>
+  <head>
+     <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://ringcentral.github.io">
+     <title>RingCentral Embeddable</title>
+     <style type="text/css">
+      html, body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+      #app {
+        display: flex;
+        padding: 0;
+        margin: 0;
+        border: none;
+        height: 100%;
+        flex-direction: column;
+      }
+      #header {
+        height: 36px;
+        line-height: 36px;
+        width: 100%;
+        text-align: center;
+        background: #f3f3f3;
+        -webkit-app-region: drag;
+        position: relative;
+        cursor: pointer;
+      }
+      #logo {
+        display: inline-block;
+        margin-top: 10px;
+        height: 16px;
+        width: 100px;
+        cursor: pointer;
+      }
+      .button {
+        position: absolute;
+        box-sizing: border-box;
+        top: 50%;
+        height: 20px;
+        width: 20px;
+        margin-top: -12px;
+        border-radius: 3px;
+        cursor: pointer;
+        border-style: solid;
+        border-width: 1px;
+        border-color: transparent;
+        -webkit-app-region: no-drag;
+      }
+      .button:hover {
+        border-color: #cccccc;
+      }
+      .close {
+        right: 14px;
+      }
+      .closeIcon {
+        position: relative;
+        overflow: hidden;
+        margin: 2px;
+        width: 14px;
+        height: 14px;
+      }
+      .line:first-child, .line:last-child {
+        position: absolute;
+        height: 2px;
+        width: 100%;
+        top: 6px;
+        left: 0;
+        background: #888888;
+        border-radius: 1px;
+      }
+      .line:first-child {
+        transform: rotate(45deg);
+      }
+      .line:last-child {
+        transform: rotate(-45deg);
+      }
+      .minimize {
+        right: 40px;
+      }
+      .minimizeIcon {
+        position: absolute;
+        box-sizing: border-box;
+        left: 3px;
+        bottom: 7px;
+        width: 12px;
+        height: 2px;
+        border: 1px solid #888888;
+      }
+      .minimizeIconBar {
+        width: 100%;
+        height: 1px;
+        background-color: #888888;
+      }
+      iframe {
+        display: flex;
+        flex: 1;
+        border: none;
+      }
+     </style>
+  </head>
+  <body>
+    <div id="app">
+      <header id="header">
+        <div id="close" class="button close">
+          <div class="closeIcon">
+            <div class="line"></div><div class="line"></div>
+          </div>
+        </div>
+        <div id="minimize" class="button minimize">
+          <div class="minimizeIcon">
+            <div class="minimizeIconBar"></div>
+          </div>
+        </div>
+        <img src="./header_logo.svg" id="logo" />
+      </header>
+      <iframe
+        sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+        allow="microphone"
+        id="rc-widget-adapter-frame"
+        src="https://ringcentral.github.io/ringcentral-embeddable/app.html?disableConferenceCall=false&disableActiveCallControl=false"
+      >
+      </iframe>
+    </div>
+    <script src="./app.js"></script>
+  </body>
+</html>

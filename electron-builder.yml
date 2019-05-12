@@ -3,7 +3,9 @@ productName: RingCentral Embeddable
 files:
   - package.json
   - main.js
-  - preload.js
+  - app.html
+  - app.js
+  - header_logo.svg
   - icon.png
   - icon.icns
   - build/icon.*

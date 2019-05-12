@@ -1,22 +1,15 @@
 const { ipcRenderer } = require('electron');
 
-console.log('preload...')
+const closeButton = document.getElementById('close');
+const minimizeButton = document.getElementById('minimize');
 
-function dispatchMessage(data) {
-  const message = new MessageEvent('message', {
-    view: window.parent,
-    bubbles: false,
-    cancelable: false,
-    data,
-    source: window
-  })
-  window.dispatchEvent(message)
-}
+closeButton.addEventListener('click', () => {
+  ipcRenderer.send('close-main-window');
+});
 
-// mock main window post message
-window.parent.postMessage = function (data) {
-  dispatchMessage(data);
-};
+minimizeButton.addEventListener('click', () => {
+  ipcRenderer.send('minimize-main-window');
+});
 
 window.addEventListener('message', function (event) {
   const data = event.data;
@@ -27,6 +20,7 @@ window.addEventListener('message', function (event) {
   switch (data.type) {
     case 'rc-call-ring-notify':
       // get call on ring event
+      ipcRenderer.send('show-main-window');
       const call = data.call;
       notification = new Notification('New Call', {
         body: `Incoming Call from ${call.fromUserName || call.from}`
@@ -40,13 +34,13 @@ window.addEventListener('message', function (event) {
         // });
         ipcRenderer.send('show-main-window');
       };
-      notification.onclose = () => {
-        dispatchMessage({
-          type: 'rc-adapter-control-call',
-          callAction: 'reject',
-          callId: call.id,
-        });
-      }
+      // notification.onclose = () => {
+      //   dispatchMessage({
+      //     type: 'rc-adapter-control-call',
+      //     callAction: 'reject',
+      //     callId: call.id,
+      //   });
+      // }
       break;
     case 'rc-inbound-message-notify':
       const message = data.message;

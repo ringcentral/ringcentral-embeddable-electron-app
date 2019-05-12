@@ -1,5 +1,4 @@
 const { app, BrowserWindow, ipcMain, session } = require('electron');
-const path = require('path');
 
 let mainWindow;
 
@@ -9,29 +8,45 @@ function createMainWindow() {
   const sess = session.fromPartition('persist:rc-ev-session');
   // Create the main window
   mainWindow = new BrowserWindow({
-    width: 310,
-    height: 540,
+    width: 300,
+    height: 536,
     resizable: true,
     backgroundColor: '#ffffff',
-    autoHideMenuBar: true,
     webPreferences: {
-      nodeIntegration: false,
-      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+      nativeWindowOpen: true,
       session: sess,
-      audio: true,
     },
+    frame: false,
     show: false, // hidden the windown before loaded
   });
   // open dev tool default
   // mainWindow.webContents.openDevTools();
-  // To load RingCentral Embeddable Voice
-  mainWindow.loadURL('https://ringcentral.github.io/ringcentral-embeddable/app.html?disableConferenceCall=false&disableActiveCallControl=false');
-  // To use Game of Thrones Styles, please replace upper line as following line:
-  // mainWindow.loadURL('https://ringcentral.github.io/ringcentral-embeddable/app.html?stylesUri=https://embbnux.github.io/ringcentral-web-widget-styles/GameofThrones/styles.css');
+  // To load RingCentral Embeddable
+  mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   // Show the main window when page is loaded
   mainWindow.once('ready-to-show', () => {
-    mainWindow.show()
+    mainWindow.show();
+  });
+
+  mainWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
+    event.preventDefault();
+    event.newGuest = new BrowserWindow({
+      ...options,
+      frame: true,
+      parent: mainWindow,
+      autoHideMenuBar: true,
+      session: sess,
+    });
+  });
+  mainWindow.on('close', (event) => {
+    if (app.quitting) {
+      mainWindow = null
+    } else {
+      event.preventDefault()
+      mainWindow.hide()
+    }
   });
 }
 
@@ -48,8 +63,28 @@ app.on('window-all-closed', () => {
   }
 });
 
-ipcMain.on('show-main-window', (e, data) => {
+ipcMain.on('show-main-window', () => {
+  if (!mainWindow) {
+    return;
+  }
+  if (mainWindow.isVisible()) {
+    mainWindow.focus();
+    return
+  }
   mainWindow.show();
+});
+
+ipcMain.on('minimize-main-window', () => {
+  if (!mainWindow.isMinimized()) {
+    mainWindow.minimize();
+  }
+});
+
+ipcMain.on('close-main-window', () => {
+  if (!mainWindow) {
+    return;
+  }
+  mainWindow.hide();
 });
 
 app.on('activate', () => {
@@ -60,4 +95,8 @@ app.on('activate', () => {
   } else {
     mainWindow.show();
   }
+});
+
+app.on('before-quit', () => {
+  app.quitting = true;
 });
