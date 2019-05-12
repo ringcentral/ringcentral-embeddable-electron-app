@@ -5,6 +5,7 @@ files:
   - main.js
   - app.html
   - app.js
+  - preload.js
   - header_logo.svg
   - icon.png
   - icon.icns
