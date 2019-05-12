@@ -24,23 +24,23 @@ function createMainWindow() {
   // open dev tool default
   // mainWindow.webContents.openDevTools();
   // To load RingCentral Embeddable
-  mainWindow.loadURL(`file://${__dirname}/app.html`);
+  mainWindow.loadFile('./app.html');
 
   // Show the main window when page is loaded
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
   });
 
-  mainWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
-    event.preventDefault();
-    event.newGuest = new BrowserWindow({
-      ...options,
-      frame: true,
-      parent: mainWindow,
-      autoHideMenuBar: true,
-      session: sess,
-    });
-  });
+  // mainWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
+  //   event.preventDefault();
+  //   event.newGuest = new BrowserWindow({
+  //     ...options,
+  //     frame: true,
+  //     parent: mainWindow,
+  //     autoHideMenuBar: true,
+  //     session: sess,
+  //   });
+  // });
   mainWindow.on('close', (event) => {
     if (app.quitting) {
       mainWindow = null
