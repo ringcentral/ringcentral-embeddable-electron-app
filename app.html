@@ -93,7 +93,7 @@
         height: 1px;
         background-color: #888888;
       }
-      iframe {
+      webview {
         display: flex;
         flex: 1;
         border: none;
@@ -115,13 +115,15 @@
         </div>
         <img src="./header_logo.svg" id="logo" />
       </header>
-      <iframe
-        sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
-        allow="microphone"
+      <webview
+        preload="./preload.js"
+        partition="persist:rc-ev-session"
+        allowpopups
+        webpreferences="nativeWindowOpen"
         id="rc-widget-adapter-frame"
         src="https://ringcentral.github.io/ringcentral-embeddable/app.html?disableConferenceCall=false&disableActiveCallControl=false"
       >
-      </iframe>
+      </webview>
     </div>
     <script src="./app.js"></script>
   </body>

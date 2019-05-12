@@ -16,6 +16,7 @@ function createMainWindow() {
       nodeIntegration: true,
       nativeWindowOpen: true,
       session: sess,
+      webviewTag: true,
     },
     frame: false,
     show: false, // hidden the windown before loaded
