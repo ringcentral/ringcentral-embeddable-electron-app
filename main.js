@@ -5,7 +5,7 @@ let mainWindow;
 // console.log(process.versions);
 
 function createMainWindow() {
-  const sess = session.fromPartition('persist:rc-ev-session');
+  const sess = session.fromPartition('persist:rcstorage');
   // Create the main window
   mainWindow = new BrowserWindow({
     width: 300,
