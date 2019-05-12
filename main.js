@@ -5,6 +5,7 @@ const singleInstanceLock = app.requestSingleInstanceLock();
 if (!singleInstanceLock) {
   console.warn('App already running');
 	app.quit();
+  return;
 }
 
 let mainWindow;
