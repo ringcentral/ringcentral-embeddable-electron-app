@@ -1,38 +1,61 @@
-const { app, BrowserWindow, ipcMain, session } = require('electron');
-const path = require('path');
+const { app, BrowserWindow, ipcMain } = require('electron');
+
+const singleInstanceLock = app.requestSingleInstanceLock();
+
+if (!singleInstanceLock) {
+  console.warn('App already running');
+	app.quit();
+  return;
+}
 
 let mainWindow;
-let willQuitApp = false;
+
+// console.log(process.versions);
 
 function createMainWindow() {
-  const ses = session.fromPartition('persist:rc-ev-session');
   // Create the main window
   mainWindow = new BrowserWindow({
-    width: 310,
-    height: 540,
-    resizable: false,
+    width: 300,
+    height: 536,
+    resizable: true,
     backgroundColor: '#ffffff',
     webPreferences: {
-      nodeIntegration: false,
-      preload: path.join(__dirname, 'preload.js'),
-      session: ses,
+      nodeIntegration: true,
+      nativeWindowOpen: true,
+      partition: 'persist:rcstorage',
+      webviewTag: true,
+      // enableRemoteModule: true,
     },
+    frame: false,
     show: false, // hidden the windown before loaded
   });
   // open dev tool default
-  // mainWindow.webContents.openDevTools();
-  // To load RingCentral Embeddable Voice
-  mainWindow.loadURL('https://ringcentral.github.io/ringcentral-embeddable-voice/app.html');
-  // To use Game of Thrones Styles, please replace upper line as following line:
-  // mainWindow.loadURL('https://ringcentral.github.io/ringcentral-embeddable-voice/app.html?stylesUri=https://embbnux.github.io/ringcentral-web-widget-styles/GameofThrones/styles.css');
+  if (process.env.DEBUG == 1) {
+    mainWindow.webContents.openDevTools();
+  }
+  // To load RingCentral Embeddable
+  mainWindow.loadFile('./app.html');
 
   // Show the main window when page is loaded
   mainWindow.once('ready-to-show', () => {
-    mainWindow.show()
+    mainWindow.show();
+  });
+
+  mainWindow.on('close', () => {
+    mainWindow = null
   });
 }
 
-let notification;
+app.on('second-instance', () => {
+  if (!mainWindow) {
+    return;
+  }
+  if (mainWindow.isMinimized()) {
+    mainWindow.restore();
+  }
+  mainWindow.focus();
+});
+
 app.on('ready', () => {
   createMainWindow();
 });
@@ -46,10 +69,6 @@ app.on('window-all-closed', () => {
   }
 });
 
-ipcMain.on('show-main-window', (e, data) => {
-  mainWindow.show();
-});
-
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
@@ -58,4 +77,28 @@ app.on('activate', () => {
   } else {
     mainWindow.show();
   }
+});
+
+ipcMain.on('show-main-window', () => {
+  if (!mainWindow) {
+    return;
+  }
+  if (mainWindow.isVisible()) {
+    mainWindow.focus();
+    return
+  }
+  mainWindow.show();
+});
+
+ipcMain.on('minimize-main-window', () => {
+  if (!mainWindow.isMinimized()) {
+    mainWindow.minimize();
+  }
+});
+
+ipcMain.on('close-main-window', () => {
+  if (!mainWindow) {
+    return;
+  }
+  mainWindow.close();
 });

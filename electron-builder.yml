@@ -1,0 +1,42 @@
+appId: com.ringcentral.integration.EmbeddableVoice
+productName: RingCentral Embeddable
+files:
+  - package.json
+  - main.js
+  - app.html
+  - app.js
+  - preload.js
+  - header_logo.svg
+  - icon.png
+  - icon.icns
+  - build/icon.*
+directories:
+  buildResources: build
+  output: release
+publish:
+  -
+    provider: github
+    owner: embbnux
+    repo: ringcentral-embeddable-voice-app
+mac:
+  category: public.app-category.business
+  icon: icon.icns
+dmg:
+  contents:
+    -
+      x: 130
+      y: 220
+    -
+      x: 410
+      y: 220
+      type: link
+      path: /Applications
+win:
+  target:
+    - nsis
+linux:
+  target:
+    - deb
+    - AppImage
+  category: Telephony
+  desktop: rc-ev.desktop

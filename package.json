@@ -1,6 +1,6 @@
 {
   "name": "ringcentral-embeddable-voice-app",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "main": "main.js",
   "license": "MIT",
   "author": {
@@ -17,61 +17,7 @@
     "package-all": "electron-builder -mwl"
   },
   "devDependencies": {
-    "electron": "^2.0.0",
-    "electron-builder": "^20.13.3"
-  },
-  "build": {
-    "productName": "RingCentral Embeddable Voice",
-    "appId": "com.ringcentral.integration.EmbeddableVoice",
-    "files": [
-      "package.json",
-      "main.js",
-      "preload.js",
-      "icon.png",
-      "icon.icns",
-      "build/icon.*"
-    ],
-    "directories": {
-      "buildResources": "build",
-      "output": "release"
-    },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "embbnux",
-        "repo": "ringcentral-embeddable-voice-app"
-      }
-    ],
-    "mac": {
-      "category": "public.app-category.business",
-      "icon": "icon.icns"
-    },
-    "dmg": {
-      "contents": [
-        {
-          "x": 130,
-          "y": 220
-        },
-        {
-          "x": 410,
-          "y": 220,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ]
-    },
-    "win": {
-      "target": [
-        "nsis"
-      ]
-    },
-    "linux": {
-      "target": [
-        "deb",
-        "AppImage"
-      ],
-      "category": "Telephony",
-      "desktop": "rc-ev.desktop"
-    }
+    "electron": "^5.0.1",
+    "electron-builder": "^20.40.2"
   }
 }
