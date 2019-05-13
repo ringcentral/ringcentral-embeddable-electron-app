@@ -24,12 +24,15 @@ function createMainWindow() {
       nativeWindowOpen: true,
       partition: 'persist:rcstorage',
       webviewTag: true,
+      // enableRemoteModule: true,
     },
     frame: false,
     show: false, // hidden the windown before loaded
   });
   // open dev tool default
-  // mainWindow.webContents.openDevTools();
+  if (process.env.DEBUG == 1) {
+    mainWindow.webContents.openDevTools();
+  }
   // To load RingCentral Embeddable
   mainWindow.loadFile('./app.html');
 
