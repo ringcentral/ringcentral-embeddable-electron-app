@@ -107,5 +107,5 @@ ipcMain.on('close-main-window', () => {
   if (!mainWindow) {
     return;
   }
-  mainWindow.hide();
+  mainWindow.close();
 });
