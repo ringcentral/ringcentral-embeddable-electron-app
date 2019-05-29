@@ -16,8 +16,8 @@ Build a RingCentral desktop app with [RingCentral Embeddable](https://github.com
 Clone this repo:
 
 ```
-$ git clone https://github.com/embbnux/ringcentral-embeddable-voice-app.git
-$ cd ringcentral-embeddable-voice-app
+$ git clone https://github.com/ringcentral/ringcentral-embeddable-app.git
+$ cd ringcentral-embeddable-app
 $ yarn
 $ yarn start
 ```

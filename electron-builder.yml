@@ -16,8 +16,8 @@ directories:
 publish:
   -
     provider: github
-    owner: embbnux
-    repo: ringcentral-embeddable-voice-app
+    owner: ringcentral
+    repo: ringcentral-embeddable-app
 mac:
   category: public.app-category.business
   icon: icon.icns
