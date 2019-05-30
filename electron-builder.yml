@@ -17,7 +17,7 @@ publish:
   -
     provider: github
     owner: ringcentral
-    repo: ringcentral-embeddable-app
+    repo: ringcentral-embeddable-electron-app
 mac:
   category: public.app-category.business
   icon: icon.icns
