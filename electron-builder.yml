@@ -39,4 +39,4 @@ linux:
     - deb
     - AppImage
   category: Telephony
-  desktop: rc-ev.desktop
+  executableName: ringcentral-embeddable-voice
