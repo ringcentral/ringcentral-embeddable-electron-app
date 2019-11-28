@@ -40,3 +40,5 @@ linux:
     - AppImage
   category: Telephony
   executableName: ringcentral-embeddable-voice
+  executableArgs:
+    - --no-sandbox
