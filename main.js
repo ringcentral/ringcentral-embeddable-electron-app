@@ -1,5 +1,4 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
-
 const singleInstanceLock = app.requestSingleInstanceLock();
 
 if (!singleInstanceLock) {
@@ -28,6 +27,7 @@ function createMainWindow() {
     },
     frame: false,
     show: false, // hidden the windown before loaded
+    icon: __dirname + '/icons/32x32.png',
   });
   // open dev tool default
   if (process.env.DEBUG == 1) {
