@@ -7,11 +7,10 @@ files:
   - app.js
   - preload.js
   - header_logo.svg
-  - icon.png
-  - icon.icns
-  - build/icon.*
+  - icon.*
+  - icons/*
 directories:
-  buildResources: build
+  buildResources: ./
   output: release
 publish:
   -
