@@ -79,6 +79,10 @@ app.on('activate', () => {
   }
 });
 
+app.on('browser-window-created', (_, window) => {
+  window.setMenu(null);
+});
+
 ipcMain.on('show-main-window', () => {
   if (!mainWindow) {
     return;

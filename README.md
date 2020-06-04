@@ -4,6 +4,16 @@ Build a RingCentral desktop app with [RingCentral Embeddable](https://github.com
 
 ![preview](https://user-images.githubusercontent.com/7036536/57593463-18891480-756e-11e9-80ed-16bd61655572.png)
 
+## Usage
+
+For Linux, install with snap:
+
+```
+$ sudo snap install ringcentral-embeddable-voice
+```
+
+Or download installer files (AppImage, deb and snap) [here](https://github.com/ringcentral/ringcentral-embeddable-electron-app/releases).
+
 ## Development
 
 ### Prerequisites
