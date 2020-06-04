@@ -37,6 +37,7 @@ linux:
   target:
     - deb
     - AppImage
+    - snap
   category: Telephony
   executableName: ringcentral-embeddable-voice
   executableArgs:
