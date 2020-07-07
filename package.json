@@ -18,7 +18,7 @@
     "package-all": "electron-builder -mwl"
   },
   "devDependencies": {
-    "electron": "^8.2.0",
+    "electron": "^8.2.4",
     "electron-builder": "^22.4.1"
   }
 }
