@@ -38,6 +38,7 @@ linux:
     - deb
     - AppImage
     - snap
+    - rpm
   category: Telephony
   executableName: ringcentral-embeddable-voice
   executableArgs:
