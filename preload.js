@@ -1,5 +1,6 @@
 const { ipcRenderer } = require('electron');
 
+// listen message from Embeddable widget
 window.addEventListener('message', function (event) {
   const data = event.data;
   if (!data) {
@@ -40,6 +41,35 @@ window.addEventListener('message', function (event) {
         ipcRenderer.send('show-main-window');
       };
       break
+    case 'rc-dialer-status-notify':
+      if (data.ready) {
+        ipcRenderer.send('dialer-ready');
+      }
+    default:
+      break;
+  }
+});
+
+function sendMessageToEmbeddableWidget(message) {
+  window.postMessage(message, window.origin);
+}
+
+// listen message from main process
+ipcRenderer.on('main-message', function (e, message) {
+  switch (message.type) {
+    case 'click-to-dial':
+      sendMessageToEmbeddableWidget({
+        type: 'rc-adapter-new-call',
+        phoneNumber: message.phoneNumber,
+        toCall: true,
+      });
+      break;
+    case 'click-to-sms':
+      sendMessageToEmbeddableWidget({
+        type: 'rc-adapter-new-sms',
+        phoneNumber: message.phoneNumber,
+      });
+      break;
     default:
       break;
   }
