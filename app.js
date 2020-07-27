@@ -16,3 +16,8 @@ minimizeButton.addEventListener('click', () => {
 // webview.addEventListener('new-window', (event) => {
 //   event.preventDefault();
 // });
+
+// transfer message from main process to webview
+ipcRenderer.on('main-message', function (e, message) {
+  webview.send('main-message', message);
+});

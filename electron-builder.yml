@@ -12,6 +12,14 @@ files:
 directories:
   buildResources: ./
   output: release
+protocols:
+  -
+   name: call
+   role: Viewer
+   schemes:
+     - tel
+     - callto
+     - sms
 publish:
   -
     provider: github
