@@ -10,6 +10,7 @@ For Linux, install with snap:
 
 ```
 $ sudo snap install ringcentral-embeddable-voice
+$ sudo snap connect ringcentral-embeddable-voice:pulseaudio :pulseaudio
 ```
 
 Or download installer files (AppImage, deb and snap) [here](https://github.com/ringcentral/ringcentral-embeddable-electron-app/releases).
