@@ -15,7 +15,8 @@
     "package": "electron-builder",
     "package-linux": "electron-builder --linux",
     "package-release": "electron-builder --linux -p always",
-    "package-all": "electron-builder -mwl"
+    "package-all": "electron-builder -mwl",
+    "package-armv7l": "electron-builder --dir --armv7l --linux deb"
   },
   "devDependencies": {
     "electron": "^8.5.2",
