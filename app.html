@@ -98,6 +98,16 @@
         flex: 1;
         border: none;
       }
+      .hidden-button {
+        height: 20px;
+        width: 20px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: transparent;
+        border: none;
+        outline: none;
+      }
      </style>
   </head>
   <body>
@@ -113,6 +123,7 @@
             <div class="minimizeIconBar"></div>
           </div>
         </div>
+        <div id="hidden-button" class="hidden-button"></div>
         <img src="./header_logo.svg" id="logo" />
       </header>
       <webview
@@ -120,7 +131,7 @@
         partition="persist:rcstorage"
         allowpopups
         id="rc-widget-adapter-frame"
-        src="https://ringcentral.github.io/ringcentral-embeddable/app.html?appVersion=0.1.6&userAgent=RingCentralEmbeddableForLinux/0.1.6&disableConferenceCall=false"
+        src="https://ringcentral.github.io/ringcentral-embeddable/app.html?appVersion=0.1.7&userAgent=RingCentralEmbeddableForLinux/0.1.7"
       >
       </webview>
     </div>

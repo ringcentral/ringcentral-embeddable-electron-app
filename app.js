@@ -2,7 +2,7 @@ const { ipcRenderer } = require('electron');
 
 const closeButton = document.getElementById('close');
 const minimizeButton = document.getElementById('minimize');
-
+const hiddenButton = document.getElementById('hidden-button');
 const webview = document.querySelector('webview');
 
 closeButton.addEventListener('click', () => {
@@ -11,6 +11,12 @@ closeButton.addEventListener('click', () => {
 
 minimizeButton.addEventListener('click', () => {
   ipcRenderer.send('minimize-main-window');
+});
+
+hiddenButton.addEventListener('dblclick', () => {
+  webview.send('main-message', {
+    type: 'rc-adapter-set-environment',
+  });
 });
 
 // webview.addEventListener('new-window', (event) => {
