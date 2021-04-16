@@ -70,6 +70,10 @@ ipcRenderer.on('main-message', function (e, message) {
         phoneNumber: message.phoneNumber,
       });
       break;
+    case 'rc-adapter-set-environment':
+      sendMessageToEmbeddableWidget({
+        type: 'rc-adapter-set-environment',
+      });
     default:
       break;
   }
