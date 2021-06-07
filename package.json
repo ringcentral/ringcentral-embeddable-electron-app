@@ -19,7 +19,7 @@
     "package-armv7l": "electron-builder --dir --armv7l --linux deb"
   },
   "devDependencies": {
-    "electron": "^11.3.0",
+    "electron": "^13.1.0",
     "electron-builder": "^22.4.1"
   }
 }

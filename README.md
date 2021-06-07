@@ -30,6 +30,20 @@ Clone this repo:
 $ git clone https://github.com/ringcentral/ringcentral-embeddable-electron-app.git
 $ cd ringcentral-embeddable-electron-app
 $ yarn
+```
+
+Create `api.json` file in project root path:
+
+```JSON
+{
+  "ringcentralClientId": "your_ringcentral_client_id",
+  "ringcentralServer": "your_ringcentral_api_server, eg: https://platform.ringcentral.com",
+}
+```
+
+Start app:
+
+```
 $ yarn start
 ```
 
