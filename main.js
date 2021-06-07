@@ -76,7 +76,7 @@ function createMainWindow() {
   mainView.setBounds({ x: 0, y: 36, width: 300, height: 500 });
   mainView.setAutoResize({ width: true, height: true });
   let appUrl = 'https://ringcentral.github.io/ringcentral-embeddable/app.html';
-  appUrl = `${appUrl}?appVersion=${version}&userAgent=RingCentralEmbeddableForLinux/${version}`;
+  appUrl = `${appUrl}?appVersion=${version}&userAgent=RingCentralEmbeddableForLinux/${version}&enableRingtoneSettings=1`;
   if (rcClientId) {
     appUrl = `${appUrl}&clientId=${rcClientId}`;
   }
