@@ -1,5 +1,17 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const path = require('path');
+const fs = require('fs');
+const { app, BrowserWindow, ipcMain, BrowserView, shell } = require('electron');
 const singleInstanceLock = app.requestSingleInstanceLock();
+
+const { version } = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json')));
+let rcClientId;
+let rcServer;
+const apiConfigFile = path.resolve(__dirname, 'api.json');
+if (fs.existsSync(apiConfigFile)) {
+  const apiConfig = JSON.parse(fs.readFileSync(apiConfigFile));
+  rcClientId = apiConfig.ringcentralClientId;
+  rcServer = apiConfig.ringcentralServer;
+}
 
 if (!singleInstanceLock) {
   console.warn('App already running');
@@ -8,6 +20,7 @@ if (!singleInstanceLock) {
 }
 
 let mainWindow;
+let mainView;
 let numberToDialer = null;
 let dialerReady = false;
 
@@ -22,6 +35,7 @@ function createMainWindow() {
     backgroundColor: '#ffffff',
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false,
       nativeWindowOpen: true,
       partition: 'persist:rcstorage',
       webviewTag: true,
@@ -44,17 +58,54 @@ function createMainWindow() {
   });
 
   mainWindow.on('close', () => {
-    mainWindow = null
+    mainWindow = null;
+    mainView = null;
     numberToDialer = null;
     dialerReady = false;
   });
+  mainView = new BrowserView({
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: false,
+      nativeWindowOpen: true,
+      partition: 'persist:rcstorage',
+      preload: path.resolve(__dirname, './preload.js'),
+    },
+  });
+  mainWindow.setBrowserView(mainView);
+  mainView.setBounds({ x: 0, y: 36, width: 300, height: 500 });
+  mainView.setAutoResize({ width: true, height: true });
+  let appUrl = 'https://ringcentral.github.io/ringcentral-embeddable/app.html';
+  appUrl = `${appUrl}?appVersion=${version}&userAgent=RingCentralEmbeddableForLinux/${version}&enableRingtoneSettings=1`;
+  if (rcClientId) {
+    appUrl = `${appUrl}&clientId=${rcClientId}`;
+  }
+  if (rcServer) {
+    appUrl = `${appUrl}&appServer=${rcServer}`;
+  }
+  mainView.webContents.loadURL(appUrl);
+  mainView.webContents.setWindowOpenHandler((event) => {
+    const { url } = event;
+    if (url.indexOf('authorize') > -1) {
+      return { action: 'allow' };
+    }
+    if (url.indexOf('http') > -1) {
+      shell.openExternal(url);
+      return { action: 'deny' }
+    }
+    return { action: 'allow' };
+  });
+  // open dev tool default
+  if (process.env.DEBUG == 1) {
+    mainView.webContents.openDevTools();
+  }
 }
 
-function sendMessageToMainWindow(message) {
-  if (!mainWindow) {
+function sendMessageToMainView(message) {
+  if (!mainView) {
     return;
   }
-  mainWindow.webContents.send('main-message', message)
+  mainView.webContents.send('main-message', message)
 }
 
 const protocols = ['tel', 'callto', 'sms'];
@@ -75,10 +126,10 @@ function handleCustomizedSchemeUri(url) {
     return;
   }
   if (protocol === 'sms') {
-    sendMessageToMainWindow({ type: 'click-to-sms', phoneNumber: number });
+    sendMessageToMainView({ type: 'click-to-sms', phoneNumber: number });
   } else {
     if (dialerReady) {
-      sendMessageToMainWindow({ type: 'click-to-dial', phoneNumber: number });
+      sendMessageToMainView({ type: 'click-to-dial', phoneNumber: number });
       numberToDialer = null;
     } else {
       numberToDialer = number;
@@ -110,6 +161,7 @@ app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   mainWindow = null;
+  mainView = null;
   if (process.platform !== 'darwin') {
     app.quit();
   }
@@ -172,10 +224,16 @@ ipcMain.on('close-main-window', () => {
 ipcMain.on('dialer-ready', () => {
   dialerReady = true;
   if (numberToDialer) {
-    sendMessageToMainWindow({
+    sendMessageToMainView({
       type: 'click-to-dial',
       phoneNumber: numberToDialer
     });
     numberToDialer = null;
   }
+});
+
+ipcMain.on('set-environment', () => {
+  sendMessageToMainView({
+    type: 'rc-adapter-set-environment',
+  });
 });

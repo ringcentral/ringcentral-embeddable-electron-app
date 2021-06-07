@@ -2,3 +2,4 @@ node_modules
 release
 *.log
 .DS_Store
+api.json

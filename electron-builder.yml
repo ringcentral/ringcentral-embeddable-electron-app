@@ -2,6 +2,7 @@ appId: com.ringcentral.integration.EmbeddableVoice
 productName: RingCentral Embeddable
 files:
   - package.json
+  - api.json
   - main.js
   - app.html
   - app.js
