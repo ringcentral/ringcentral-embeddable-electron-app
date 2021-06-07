@@ -94,7 +94,11 @@ function createMainWindow() {
       return { action: 'deny' }
     }
     return { action: 'allow' };
-  })
+  });
+  // open dev tool default
+  if (process.env.DEBUG == 1) {
+    mainView.webContents.openDevTools();
+  }
 }
 
 function sendMessageToMainView(message) {
