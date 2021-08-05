@@ -16,7 +16,8 @@
     "package-linux": "electron-builder --linux",
     "package-release": "electron-builder --linux -p always",
     "package-all": "electron-builder -mwl",
-    "package-armv7l": "electron-builder --dir --armv7l --linux deb"
+    "package-armv7l": "electron-builder --dir --armv7l --linux deb",
+    "package-arm64": "electron-builder --dir --arm64 --linux snap"
   },
   "devDependencies": {
     "electron": "^13.1.4",
