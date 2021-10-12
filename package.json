@@ -20,7 +20,7 @@
     "package-arm64": "electron-builder --dir --arm64 --linux snap"
   },
   "devDependencies": {
-    "electron": "^13.1.4",
+    "electron": "^13.3.0",
     "electron-builder": "^22.11.7"
   }
 }

@@ -100,12 +100,7 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.4.tgz#f0ec25dbf2f0e4b18647313ac031134ca5b24b21"
   integrity sha512-1z8k4wzFnNjVK/tlxvrWuK5WMt6mydWWP7+zvH5eFep4oj+UkrfiJTRtjCeBXNpwaA/FYqqtb4/QS4ianFpIRA==
 
-"@types/node@*":
-  version "12.12.31"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.31.tgz#d6b4f9645fee17f11319b508fb1001797425da51"
-  integrity sha512-T+wnJno8uh27G9c+1T+a1/WYCHzLeDqtsGJkoEdSp2X8RTh3oOCZQcUnjAx90CS8cmmADX51O0FI/tu9s0yssg==
-
-"@types/node@^14.6.2":
+"@types/node@*", "@types/node@^14.6.2":
   version "14.17.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.17.2.tgz#1e94476db57ec93a372c7f7d29aa5707cfb92339"
   integrity sha512-sld7b/xmFum66AAKuz/rp/CUO8+98fMpyQ3SBfzzBNGMd/1iHBTAg9oyAvcYlAj46bpc74r91jSw2iFdnx29nw==
@@ -698,10 +693,10 @@ electron-publish@22.11.7:
     lazy-val "^1.0.5"
     mime "^2.5.2"
 
-electron@^13.1.4:
-  version "13.1.4"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-13.1.4.tgz#6d20d932a0651c3cba9f09a3d08cbaf5b69aa84b"
-  integrity sha512-4qhRZbRvGqHmMWsCG/kRVF4X8VIq9Nujgm+gXZLBSpiR6uUtMHy7ViBTQZl1PGf6O9Ppxhpr9Yz+k6Um9WoP3Q==
+electron@^13.3.0:
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-13.3.0.tgz#5f4f245723dd50fcd2c3d386a1d66fe748af404f"
+  integrity sha512-d/BvOLDjI4i7yf9tqCuLL2fFGA2TrM/D9PyRpua+rJolG0qrwp/FohP02L0m+44kmPpofIo4l3NPwLmzyKKimA==
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^14.6.2"
