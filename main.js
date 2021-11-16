@@ -73,7 +73,7 @@ function createMainWindow() {
     },
   });
   mainWindow.setBrowserView(mainView);
-  mainView.setBounds({ x: 0, y: 36, width: 300, height: 500 });
+  mainView.setBounds({ x: 0, y: 37, width: 300, height: 500 });
   mainView.setAutoResize({ width: true, height: true });
   let appUrl = 'https://ringcentral.github.io/ringcentral-embeddable/app.html';
   appUrl = `${appUrl}?appVersion=${version}&userAgent=RingCentralEmbeddableForLinux/${version}&enableRingtoneSettings=1`;
@@ -174,6 +174,7 @@ function showMainWindow() {
     createMainWindow();
   } else {
     mainWindow.show();
+    mainWindow.focus();
   }
 }
 
