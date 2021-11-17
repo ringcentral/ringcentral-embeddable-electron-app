@@ -13,11 +13,12 @@
     "postinstall": "electron-builder install-app-deps",
     "start": "electron .",
     "package": "electron-builder",
-    "package-linux": "electron-builder --linux",
+    "package-linux": "electron-builder --linux -p never",
     "package-release": "electron-builder --linux -p always",
     "package-all": "electron-builder -mwl",
     "package-armv7l": "electron-builder --dir --armv7l --linux deb",
-    "package-arm64": "electron-builder --dir --arm64 --linux snap"
+    "package-arm64": "electron-builder --dir --arm64 --linux snap",
+    "generate-credentials": "node ./scripts/generate-credentials"
   },
   "devDependencies": {
     "electron": "^13.6.1",

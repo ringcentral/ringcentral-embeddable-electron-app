@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v**.**.**"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: sudo snap install snapcraft --classic
+      - run: yarn
+      - run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+      - run: npm version $VERSION --git-tag-version=false
+      - run: yarn generate-credentials
+        env:
+          RINGCENTRAL_CLIENT_ID: ${{ secrets.RINGCENTRAL_CLIENT_ID }}
+          RINGCENTRAL_SERVER: ${{ secrets.RINGCENTRAL_SERVER }}
+      - run: yarn package-linux
+        env:
+          SNAPCRAFT_BUILD_ENVIRONMENT: host
+      - name: Publish Snapcraft
+        run: |
+          echo "$SNAP_TOKEN" | snapcraft login --with -
+          snapcraft upload --release=edge release/*.snap
+        env:
+          SNAP_TOKEN: ${{secrets.SNAP_TOKEN}} 
+          SNAPCRAFT_BUILD_ENVIRONMENT: host
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            release/latest-linux.yml
+            release/*.deb
+            release/*.rpm
+            release/*.AppImage
+            release/*.snap
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
