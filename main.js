@@ -1,6 +1,15 @@
 const path = require('path');
 const fs = require('fs');
-const { app, BrowserWindow, ipcMain, BrowserView, shell } = require('electron');
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  BrowserView,
+  shell,
+  Menu,
+  Tray,
+  globalShortcut,
+} = require('electron');
 const singleInstanceLock = app.requestSingleInstanceLock();
 
 const { version } = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json')));
@@ -13,18 +22,33 @@ if (fs.existsSync(apiConfigFile)) {
   rcServer = apiConfig.ringcentralServer;
 }
 
-if (!singleInstanceLock) {
-  console.warn('App already running');
-	app.quit();
-  return;
-}
-
 let mainWindow;
 let mainView;
+let tray;
 let numberToDialer = null;
 let dialerReady = false;
+let isQuiting;
 
 // console.log(process.versions);
+
+function createTray() {
+  const iconPath = path.join(__dirname, 'icons', '16x16.png');
+  tray = new Tray(iconPath);
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Show App', click: () => {
+        showMainWindow();
+      }
+    },
+    {
+      label: 'Quit', click: () => {
+        app.quit();
+      }
+    },
+  ]);
+  tray.setToolTip('RingCentral Phone (Community)');
+  tray.setContextMenu(contextMenu);
+}
 
 function createMainWindow() {
   // Create the main window
@@ -43,7 +67,7 @@ function createMainWindow() {
     },
     frame: false,
     show: false, // hidden the windown before loaded
-    icon: __dirname + '/icons/32x32.png',
+    icon: path.join(__dirname, 'icons', '48x48.png'),
   });
   // open dev tool default
   if (process.env.DEBUG == 1) {
@@ -57,7 +81,13 @@ function createMainWindow() {
     mainWindow.show();
   });
 
-  mainWindow.on('close', () => {
+  mainWindow.on('close', (event) => {
+    if (!isQuiting) {
+      event.preventDefault();
+      mainWindow.hide();
+      event.returnValue = false;
+      return;
+    }
     mainWindow = null;
     mainView = null;
     numberToDialer = null;
@@ -99,6 +129,9 @@ function createMainWindow() {
   if (process.env.DEBUG == 1) {
     mainView.webContents.openDevTools();
   }
+  if (!tray) {
+    createTray();
+  }
 }
 
 function sendMessageToMainView(message) {
@@ -137,104 +170,112 @@ function handleCustomizedSchemeUri(url) {
   }
 }
 
-app.on('second-instance', (e, commandLine, cwd) => {
-  if (!mainWindow) {
-    return;
-  }
-  if (mainWindow.isMinimized()) {
-    mainWindow.restore();
-  }
-  mainWindow.focus();
-  commandLine.forEach(cmd => {
-    handleCustomizedSchemeUri(cmd);
-  });
-});
-
-app.on('ready', () => {
-  createMainWindow();
-  process.argv.forEach((cmd) => {
-    handleCustomizedSchemeUri(cmd);
-  });
-});
-
-app.on('window-all-closed', () => {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  mainWindow = null;
-  mainView = null;
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
 function showMainWindow() {
-// On OS X it's common to re-create a window in the app when the
+  // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
     createMainWindow();
   } else {
+    if (mainWindow.isMinimized()) {
+      mainWindow.restore();
+    }
     mainWindow.show();
     mainWindow.focus();
   }
 }
 
-app.on('activate', () => {
-  showMainWindow();
-});
-
-app.setAsDefaultProtocolClient('tel');
-app.setAsDefaultProtocolClient('callto');
-app.setAsDefaultProtocolClient('sms');
-// for macOS
-app.on('open-url', function (event, url) {
-  event.preventDefault();
-  showMainWindow();
-  handleCustomizedSchemeUri(url);
-});
-
-app.on('browser-window-created', (_, window) => {
-  window.setMenu(null);
-});
-
-ipcMain.on('show-main-window', () => {
-  if (!mainWindow) {
-    return;
-  }
-  if (mainWindow.isVisible()) {
-    mainWindow.focus();
-    return
-  }
-  mainWindow.show();
-});
-
-ipcMain.on('minimize-main-window', () => {
-  if (!mainWindow.isMinimized()) {
-    mainWindow.minimize();
-  }
-});
-
-ipcMain.on('close-main-window', () => {
-  if (!mainWindow) {
-    return;
-  }
-  dialerReady = false;
-  numberToDialer = null;
-  mainWindow.close();
-});
-
-ipcMain.on('dialer-ready', () => {
-  dialerReady = true;
-  if (numberToDialer) {
-    sendMessageToMainView({
-      type: 'click-to-dial',
-      phoneNumber: numberToDialer
+if (!singleInstanceLock) {
+  console.warn('App already running');
+	app.quit();
+} else {
+  app.whenReady().then(() => {
+    globalShortcut.register('CommandOrControl+Q', () => {
+      app.quit();
     });
-    numberToDialer = null;
-  }
-});
-
-ipcMain.on('set-environment', () => {
-  sendMessageToMainView({
-    type: 'rc-adapter-set-environment',
+  }).then(() => {
+    createMainWindow();
+    process.argv.forEach((cmd) => {
+      handleCustomizedSchemeUri(cmd);
+    });
   });
-});
+  app.on('second-instance', (e, commandLine, cwd) => {
+    if (!mainWindow) {
+      return;
+    }
+    showMainWindow();
+    commandLine.forEach(cmd => {
+      handleCustomizedSchemeUri(cmd);
+    });
+  });
+  
+  app.on('before-quit', () => {
+    isQuiting = true;
+  });
+  
+  app.on('window-all-closed', () => {
+    // On OS X it is common for applications and their menu bar
+    // to stay active until the user quits explicitly with Cmd + Q
+    mainWindow = null;
+    mainView = null;
+    if (process.platform !== 'darwin') {
+      app.quit();
+    }
+  });
+  
+  app.on('activate', () => {
+    showMainWindow();
+  });
+  
+  app.setAsDefaultProtocolClient('tel');
+  app.setAsDefaultProtocolClient('callto');
+  app.setAsDefaultProtocolClient('sms');
+  // for macOS
+  app.on('open-url', function (event, url) {
+    event.preventDefault();
+    showMainWindow();
+    handleCustomizedSchemeUri(url);
+  });
+  
+  app.on('browser-window-created', (_, window) => {
+    window.setMenu(null);
+  });
+  
+  ipcMain.on('show-main-window', () => {
+    if (!mainWindow) {
+      return;
+    }
+    showMainWindow();
+  });
+  
+  ipcMain.on('minimize-main-window', () => {
+    if (!mainWindow.isMinimized()) {
+      mainWindow.minimize();
+    }
+  });
+  
+  ipcMain.on('close-main-window', () => {
+    if (!mainWindow) {
+      return;
+    }
+    dialerReady = false;
+    numberToDialer = null;
+    mainWindow.close();
+  });
+  
+  ipcMain.on('dialer-ready', () => {
+    dialerReady = true;
+    if (numberToDialer) {
+      sendMessageToMainView({
+        type: 'click-to-dial',
+        phoneNumber: numberToDialer
+      });
+      numberToDialer = null;
+    }
+  });
+  
+  ipcMain.on('set-environment', () => {
+    sendMessageToMainView({
+      type: 'rc-adapter-set-environment',
+    });
+  });
+}
