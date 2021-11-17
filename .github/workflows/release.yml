@@ -21,7 +21,7 @@ jobs:
       - run: sudo snap install snapcraft --classic
       - run: yarn
       - run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
-      - run: npm version $VERSION --git-tag-version=false
+      - run: npm version $VERSION --git-tag-version=false --allow-same-version
       - run: yarn generate-credentials
         env:
           RINGCENTRAL_CLIENT_ID: ${{ secrets.RINGCENTRAL_CLIENT_ID }}
