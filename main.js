@@ -112,6 +112,9 @@ function createMainWindow() {
   }
   if (rcServer) {
     appUrl = `${appUrl}&appServer=${rcServer}`;
+    if (rcServer.indexOf('discovery') > -1) {
+      appUrl = `${appUrl}&discovery=1`;
+    }
   }
   mainView.webContents.loadURL(appUrl);
   mainView.webContents.setWindowOpenHandler((event) => {
