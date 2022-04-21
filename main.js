@@ -8,7 +8,6 @@ const {
   shell,
   Menu,
   Tray,
-  globalShortcut,
 } = require('electron');
 const singleInstanceLock = app.requestSingleInstanceLock();
 
@@ -128,6 +127,14 @@ function createMainWindow() {
     }
     return { action: 'allow' };
   });
+  const onInputEvent = (event, input) => {
+    if ((input.control || input.meta) && input.key.toLowerCase() === 'q') {
+      console.log('Pressed Control/Command+Q')
+      app.quit();
+    }
+  };
+  mainWindow.webContents.on('before-input-event', onInputEvent);
+  mainView.webContents.on('before-input-event', onInputEvent);
   // open dev tool default
   if (process.env.DEBUG == 1) {
     mainView.webContents.openDevTools();
@@ -192,10 +199,6 @@ if (!singleInstanceLock) {
 	app.quit();
 } else {
   app.whenReady().then(() => {
-    globalShortcut.register('CommandOrControl+Q', () => {
-      app.quit();
-    });
-  }).then(() => {
     createMainWindow();
     process.argv.forEach((cmd) => {
       handleCustomizedSchemeUri(cmd);
