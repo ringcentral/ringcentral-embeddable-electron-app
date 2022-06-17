@@ -21,7 +21,7 @@
     "generate-credentials": "node ./scripts/generate-credentials"
   },
   "devDependencies": {
-    "electron": "^13.6.6",
+    "electron": "^15.5.5",
     "electron-builder": "^22.14.13"
   }
 }
