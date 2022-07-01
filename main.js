@@ -21,7 +21,7 @@ if (fs.existsSync(apiConfigFile)) {
   rcServer = apiConfig.ringcentralServer;
 }
 let useSystemMenu = false;
-const useSystemMenuFile = path.resolve(app.getAppPath(), 'useSystemMenu.txt');
+const useSystemMenuFile = path.resolve(app.getAppPath(), '.useSystemMenu');
 if (fs.existsSync(useSystemMenuFile)) {
   useSystemMenu = true;
 }
