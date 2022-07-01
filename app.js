@@ -15,3 +15,8 @@ minimizeButton.addEventListener('click', () => {
 hiddenButton.addEventListener('dblclick', () => {
   ipcRenderer.send('set-environment');
 });
+
+if (window.location.search.indexOf('useSystemMenu') > -1) {
+  closeButton.style = 'display: none;';
+  minimizeButton.style = 'display: none;';
+}

@@ -20,6 +20,11 @@ if (fs.existsSync(apiConfigFile)) {
   rcClientId = apiConfig.ringcentralClientId;
   rcServer = apiConfig.ringcentralServer;
 }
+let useSystemMenu = false;
+const useSystemMenuFile = path.resolve(app.getAppPath(), 'useSystemMenu.txt');
+if (fs.existsSync(useSystemMenuFile)) {
+  useSystemMenu = true;
+}
 
 let mainWindow;
 let mainView;
@@ -64,7 +69,7 @@ function createMainWindow() {
       webviewTag: true,
       // enableRemoteModule: true,
     },
-    frame: false,
+    frame: useSystemMenu ? true : false,
     show: false, // hidden the windown before loaded
     icon: path.join(__dirname, 'icons', '48x48.png'),
   });
@@ -73,7 +78,11 @@ function createMainWindow() {
     mainWindow.webContents.openDevTools();
   }
   // To load RingCentral Embeddable
-  mainWindow.loadFile('./app.html');
+  let localAppUrl = `file://${__dirname}/app.html`;
+  if (useSystemMenu) {
+    localAppUrl = `${localAppUrl}?useSystemMenu=1`
+  }
+  mainWindow.loadURL(localAppUrl);
 
   // Show the main window when page is loaded
   mainWindow.once('ready-to-show', () => {
@@ -131,6 +140,21 @@ function createMainWindow() {
     if ((input.control || input.meta) && input.key.toLowerCase() === 'q') {
       console.log('Pressed Control/Command+Q')
       app.quit();
+    }
+    console.log(input);
+    if ((input.control || input.meta) && input.shift && input.key.toLowerCase() === 'm') {
+      console.log('Pressed Control/Command+Shift+M');
+      useSystemMenu = !useSystemMenu;
+      if (useSystemMenu) {
+        fs.writeFileSync(useSystemMenuFile, '1');
+      } else {
+        fs.unlinkSync(useSystemMenuFile);
+      }
+      isQuiting = true;
+      mainWindow.close();
+      mainWindow = null;
+      isQuiting = false;
+      createMainWindow();
     }
   };
   mainWindow.webContents.on('before-input-event', onInputEvent);
