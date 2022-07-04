@@ -21,7 +21,11 @@ if (fs.existsSync(apiConfigFile)) {
   rcServer = apiConfig.ringcentralServer;
 }
 let useSystemMenu = false;
-const useSystemMenuFile = path.resolve(app.getAppPath(), '.useSystemMenu');
+const appConfigPath = path.resolve(app.getPath('home'), '.rc-embeddable-app');
+if (!fs.existsSync(appConfigPath)) {
+  fs.mkdirSync(appConfigPath);
+}
+const useSystemMenuFile = path.resolve(appConfigPath, '.useSystemMenu');
 if (fs.existsSync(useSystemMenuFile)) {
   useSystemMenu = true;
 }
@@ -141,7 +145,6 @@ function createMainWindow() {
       console.log('Pressed Control/Command+Q')
       app.quit();
     }
-    console.log(input);
     if ((input.control || input.meta) && input.shift && input.key.toLowerCase() === 'm') {
       console.log('Pressed Control/Command+Shift+M');
       useSystemMenu = !useSystemMenu;
