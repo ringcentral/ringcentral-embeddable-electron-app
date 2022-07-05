@@ -2,7 +2,7 @@
 
 Build a RingCentral desktop app with [RingCentral Embeddable](https://github.com/ringcentral/ringcentral-embeddable) and [Electron.js](https://electronjs.org)
 
-![preview](https://user-images.githubusercontent.com/7036536/57593463-18891480-756e-11e9-80ed-16bd61655572.png)
+![preview](https://user-images.githubusercontent.com/7036536/177243581-72a82fad-3812-4dd1-9809-e0db1bce840e.png)
 
 ## Usage
 
@@ -19,7 +19,7 @@ Or download installer files (AppImage, deb and snap) [here](https://github.com/r
 
 ### Prerequisites
 
-* Install Node.js with version >= 8
+* Install Node.js with version >= 14
 * Install NPM or Yarn
 
 ### Setup
