@@ -31,10 +31,9 @@ jobs:
           SNAPCRAFT_BUILD_ENVIRONMENT: host
       - name: Publish Snapcraft
         run: |
-          echo "$SNAP_TOKEN" | snapcraft login --with -
           snapcraft upload --release=edge release/*.snap
         env:
-          SNAP_TOKEN: ${{secrets.SNAP_TOKEN}} 
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
           SNAPCRAFT_BUILD_ENVIRONMENT: host
       - name: Release
         uses: softprops/action-gh-release@v1
