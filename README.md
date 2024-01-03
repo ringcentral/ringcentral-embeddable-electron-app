@@ -37,7 +37,7 @@ Create `api.json` file in project root path:
 ```JSON
 {
   "ringcentralClientId": "your_ringcentral_client_id",
-  "ringcentralServer": "your_ringcentral_api_server, eg: https://platform.ringcentral.com",
+  "ringcentralServer": "your_ringcentral_api_server, eg: https://platform.ringcentral.com"
 }
 ```
 
