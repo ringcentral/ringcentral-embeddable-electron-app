@@ -19,7 +19,7 @@ Or download installer files (AppImage, deb and snap) [here](https://github.com/r
 
 ### Prerequisites
 
-* Install Node.js with version >= 14
+* Install Node.js with version >= 16
 * Install NPM or Yarn
 
 ### Setup
