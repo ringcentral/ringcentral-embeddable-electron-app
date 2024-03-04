@@ -290,7 +290,6 @@ if (!singleInstanceLock) {
     if (!mainWindow) {
       return;
     }
-    dialerReady = false;
     numberToDialer = null;
     mainWindow.close();
   });
