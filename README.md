@@ -2,7 +2,7 @@
 
 Build a RingCentral desktop app with [RingCentral Embeddable](https://github.com/ringcentral/ringcentral-embeddable) and [Electron.js](https://electronjs.org)
 
-![preview](https://user-images.githubusercontent.com/7036536/177243581-72a82fad-3812-4dd1-9809-e0db1bce840e.png)
+![preview](https://github.com/user-attachments/assets/9e36768c-7c1c-4b1d-b242-f83a65b7a7fc)
 
 ## Usage
 
