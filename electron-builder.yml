@@ -52,3 +52,6 @@ linux:
   executableName: ringcentral-embeddable-voice
   executableArgs:
     - --no-sandbox
+rpm:
+  depends:
+    - /usr/lib64/libuuid.so.1
