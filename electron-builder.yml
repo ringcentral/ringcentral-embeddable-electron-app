@@ -53,5 +53,6 @@ linux:
   executableArgs:
     - --no-sandbox
 rpm:
+  fpm: ["--rpm-rpmbuild-define=_build_id_links none"]
   depends:
     - /usr/lib64/libuuid.so.1
