@@ -1,5 +1,4 @@
 const { ipcRenderer } = require('electron');
-
 // listen message from Embeddable widget
 window.addEventListener('message', function (event) {
   const data = event.data;
@@ -45,6 +44,10 @@ window.addEventListener('message', function (event) {
       if (data.ready) {
         ipcRenderer.send('dialer-ready');
       }
+      break;
+    case 'rc-adapter-side-drawer-open-notify':
+      ipcRenderer.send('open-side-drawer', data.open);
+      break;
     default:
       break;
   }
