@@ -117,8 +117,8 @@ function createMainWindow() {
   mainWindow.setBrowserView(mainView);
   mainView.setBounds({ x: 0, y: 37, width: 300, height: 500 });
   mainView.setAutoResize({ width: true, height: true });
-  let appUrl = 'https://apps.ringcentral.com/integration/ringcentral-embeddable/latest/app.html';
-  appUrl = `${appUrl}?appVersion=${version}&userAgent=RingCentralEmbeddableForLinux/${version}&enableRingtoneSettings=1&enableNoiseReductionSetting=1&enableSMSTemplate=1`;
+  let appUrl = 'https://apps.ringcentral.com/integration/ringcentral-embeddable/3.x/app.html';
+  appUrl = `${appUrl}?appVersion=${version}&userAgent=RingCentralEmbeddableForLinux/${version}&enableRingtoneSettings=1&enableNoiseReductionSetting=1&enableSMSTemplate=1&enableSideWidget=1&enableVoicemailDrop=1`;
   if (rcClientId) {
     appUrl = `${appUrl}&clientId=${rcClientId}`;
   }
@@ -309,5 +309,26 @@ if (!singleInstanceLock) {
     sendMessageToMainView({
       type: 'rc-adapter-set-environment',
     });
+  });
+
+  ipcMain.on('open-side-drawer', (event, open) => {
+    if (!mainWindow) {
+      return;
+    }
+    const currentWidth = mainWindow.getBounds().width;
+    const currentHeight = mainWindow.getBounds().height;
+    const currentX = mainWindow.getBounds().x;
+    const currentY = mainWindow.getBounds().y;
+    if (open) {
+      if (currentWidth < 600) {
+        // set widget + 300, height same
+        mainWindow.setBounds({ x: currentX, y: currentY, width: currentWidth + 300, height: currentHeight });
+      }
+    } else {
+      if (currentWidth >= 600) {
+        // set widget - 300, height same
+        mainWindow.setBounds({ x: currentX, y: currentY, width: currentWidth - 300, height: currentHeight });
+      }
+    }
   });
 }
