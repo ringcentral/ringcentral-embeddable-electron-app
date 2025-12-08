@@ -47,7 +47,7 @@ linux:
     - deb
     - AppImage
     - snap
-    - rpm
+    - rpm  # RPM requires rpmbuild which only works on Linux
   category: Telephony
   executableName: ringcentral-embeddable-voice
   executableArgs:
