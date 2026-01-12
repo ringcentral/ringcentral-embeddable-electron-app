@@ -52,6 +52,19 @@ linux:
   executableName: ringcentral-embeddable-voice
   executableArgs:
     - --no-sandbox
+    - --ozone-platform=x11
+    - --enable-features=UseOzonePlatform
+    - --use-gl=desktop
+snap:
+  confinement: strict
+  grade: stable
+  summary: RingCentral Embeddable Voice Desktop App
+  environment:
+    DISABLE_WAYLAND: "1"
+    ELECTRON_OZONE_PLATFORM_HINT: "x11"
+    GDK_BACKEND: "x11"
+    XDG_SESSION_TYPE: "x11"
+    LIBGL_ALWAYS_SOFTWARE: "1"
 rpm:
   fpm: ["--rpm-rpmbuild-define=_build_id_links none"]
   depends:
