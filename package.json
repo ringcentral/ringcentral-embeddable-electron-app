@@ -1,7 +1,7 @@
 {
   "name": "ringcentral-embeddable-voice-app",
   "description": "A RingCentral phone desktop client, built with RingCentral Embeddable and Electron",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "main": "main.js",
   "license": "MIT",
   "author": {
